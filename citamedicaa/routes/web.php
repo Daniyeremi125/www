@@ -10,17 +10,25 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Rutas para especilidades
-Route::get('/especialidades', [App\Http\Controllers\SpecialtyController::class, 'index']);//Listado de especialdiades
-Route::get('/especialidades/create', [App\Http\Controllers\SpecialtyController::class, 'create']);//Crear especialdiades
-Route::get('/especialidades/{specialty}/edit', [App\Http\Controllers\SpecialtyController::class, 'edit']);//Editar especialdiades
-Route::post('/especialidades', [App\Http\Controllers\SpecialtyController::class, 'sendData']);//enviar especialdiades
+Route::middleware(['auth','admin'])->group(function (){
+    
+    //Especialidades
+    Route::get('/especialidades', [App\Http\Controllers\admin\SpecialtyController::class, 'index']);
+    Route::get('/especialidades/create', [App\Http\Controllers\admin\SpecialtyController::class, 'create']);
+    Route::get('/especialidades/{specialty}/edit', [App\Http\Controllers\admin\SpecialtyController::class, 'edit']);
+    Route::post('/especialidades', [App\Http\Controllers\admin\SpecialtyController::class, 'sendData']);
+    Route::put('/especialidades/{specialty}', [App\Http\Controllers\admin\SpecialtyController::class, 'update']);
+    Route::delete('/especialidades/{specialty}', [App\Http\Controllers\admin\SpecialtyController::class, 'destroy']);
 
-Route::put('/especialidades/{specialty}', [App\Http\Controllers\SpecialtyController::class, 'update']);//actualizar especialdiades
-Route::delete('/especialidades/{specialty}', [App\Http\Controllers\SpecialtyController::class, 'destroy']);//actualizar especialdiades
+    //Rutas médicos
+    Route::resource('medicos', 'App\Http\Controllers\admin\DoctorController');
 
-//Rutas para medicos
-Route::resource('medicos','App\Http\Controllers\DoctorController');
+    //Rutas Pacientes
+    Route::resource('pacientes', 'App\Http\Controllers\admin\PatientController');
 
-//Rutas para pacientes
-Route::resource('pacientes','App\Http\Controllers\PatientController');
+});
+    Route::middleware(['auth','doctor'])->group(function (){
+    Route::get('/horario', [App\Http\Controllers\doctor\HorarioController::class, 'edit']);
+    Route::post('/horario', [App\Http\Controllers\doctor\HorarioController::class, 'store']);
+  
+});
