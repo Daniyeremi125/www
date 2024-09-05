@@ -1,0 +1,17 @@
+{
+    "name": "danny/refactoring",
+    "description": "Proyecto dani refactiri",
+    "type": "project",
+    "license": "UTEA",
+    "autoload": {
+        "psr-4": {
+            "Danny\\Refactoring\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dani yeremi"
+        }
+    ],
+    "require": {}
+}
